@@ -12,13 +12,8 @@ Welcome to my Github page! I am Luis and I am currently finishing my Specializat
 
 #### 🌱 Things I am currently working on: 
 - Finish my Specialization in business intelligence  
-- Taking online courses about Data Science and Machine Learning 
-- Working at nttData Peru 🚀
+- Finish my azure courses
 
-#### :muscle: Things I am challenging myself with:
-- Get up earlier to make the most of the day.
-- Code at least 4 hours a day in python.
-- Improve my CV with some education apart from university.
 
 #### :computer: Programming languages and tools: 
 <p>
