@@ -1,0 +1,8 @@
+# Luis Leon Torres (lleontor705)
+Software developer building modern, reliable software.
+- GitHub: https://github.com/lleontor705
+- LinkedIn: https://www.linkedin.com/in/luis-humberto-leon-torres-333bb5177
+- Email: luisleon705@gmail.com
+- Stack: JavaScript, TypeScript, Python, Node.js, React, Docker, Git, Linux
+- Status: Open to collaborating on open-source projects
+- Profile data is auto-refreshed daily by GitHub Actions; badge metrics are computed from the GitHub API.

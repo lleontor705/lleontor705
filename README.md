@@ -9,6 +9,15 @@
   <img src="https://komarev.com/ghpvc/?username=lleontor705&amp;label=Profile+views&amp;color=58a6ff&amp;style=flat-square" alt="Profile views" />
 </div>
 
+<div align="center">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Fcontributions.json&style=flat-square" alt="Contributions" />
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Fstars.json&style=flat-square" alt="Stars" />
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Fprs-merged.json&style=flat-square" alt="PRs merged" />
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Ffollowers.json&style=flat-square" alt="Followers" />
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Frepos.json&style=flat-square" alt="Repos" />
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Flleontor705%2Flleontor705%2Fmain%2Fbadges%2Fcontributed-to.json&style=flat-square" alt="Contributed to" />
+</div>
+
 ### 👨‍💻 About me
 
 - 🔭 Focused on building clean, maintainable, production-ready software
@@ -16,10 +25,22 @@
 - 💬 Open to collaborating on interesting open-source projects
 - 📫 Reach me at luisleon705@gmail.com or connect on LinkedIn
 
+### 🚀 Latest work
+
+<!-- START_SECTION:latest_repos -->
+<!-- END_SECTION:latest_repos -->
+
 ### ⚙️ Tech stack
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=js,ts,python,nodejs,react,docker,git,linux&perline=8" alt="Tech stack" />
+  <a href="https://developer.mozilla.org/docs/Web/JavaScript"><img height="40" src="https://skillicons.dev/icons?i=js" title="JavaScript" alt="JavaScript" /></a>
+  <a href="https://www.typescriptlang.org"><img height="40" src="https://skillicons.dev/icons?i=ts" title="TypeScript" alt="TypeScript" /></a>
+  <a href="https://www.python.org"><img height="40" src="https://skillicons.dev/icons?i=py" title="Python" alt="Python" /></a>
+  <a href="https://nodejs.org"><img height="40" src="https://skillicons.dev/icons?i=nodejs" title="Node.js" alt="Node.js" /></a>
+  <a href="https://react.dev"><img height="40" src="https://skillicons.dev/icons?i=react" title="React" alt="React" /></a>
+  <a href="https://www.docker.com"><img height="40" src="https://skillicons.dev/icons?i=docker" title="Docker" alt="Docker" /></a>
+  <a href="https://git-scm.com"><img height="40" src="https://skillicons.dev/icons?i=git" title="Git" alt="Git" /></a>
+  <a href="https://www.linux.org"><img height="40" src="https://skillicons.dev/icons?i=linux" title="Linux" alt="Linux" /></a>
 </div>
 
 ### 📊 GitHub stats
@@ -40,6 +61,8 @@
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/lleontor705/lleontor705/output/github-contribution-grid-snake.svg" />
   <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/lleontor705/lleontor705/output/github-contribution-grid-snake.svg" />
 </picture>
+
+🤖 **For agents**: this profile is agent-readable — read [`AGENTS.md`](./AGENTS.md) for structured facts or [`llms.txt`](./llms.txt) for a machine-parseable summary.
 
 ### 📫 Connect with me
 

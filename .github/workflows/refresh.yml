@@ -1,0 +1,144 @@
+name: Refresh Profile Data
+
+on:
+  schedule:
+    - cron: "10 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute metrics (GraphQL)
+        id: metrics
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOGIN="${{ github.repository_owner }}"
+
+          COUNTS=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
+            followers{totalCount}
+            repositories(ownerAffiliations:OWNER,isFork:false,first:1){totalCount}
+            repositoriesContributedTo{totalCount}
+          }}')
+          FOLLOWERS=$(printf '%s' "$COUNTS" | jq -r '.data.user.followers.totalCount // 0')
+          REPOS=$(printf '%s' "$COUNTS" | jq -r '.data.user.repositories.totalCount // 0')
+          CONTRIBTO=$(printf '%s' "$COUNTS" | jq -r '.data.user.repositoriesContributedTo.totalCount // 0')
+
+          CONTRIB=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
+            contributionsCollection{contributionCalendar{totalContributions}}
+          }}')
+          CONTRIBUTIONS=$(printf '%s' "$CONTRIB" | jq -r '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
+
+          STARSRESP=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
+            repositories(ownerAffiliations:OWNER,isFork:false,first:100,orderBy:{field:STARGAZERS,direction:DESC}){nodes{stargazers{totalCount}}}
+          }}')
+          STARS=$(printf '%s' "$STARSRESP" | jq -r '[.data.user.repositories.nodes[].stargazers.totalCount] | add // 0')
+
+          PRS=$(gh api "search/issues?q=is:pr+is:merged+author:$LOGIN&per_page=1" --jq '.total_count // 0')
+
+          echo "contributions=$CONTRIBUTIONS" >> "$GITHUB_OUTPUT"
+          echo "stars=$STARS" >> "$GITHUB_OUTPUT"
+          echo "prs=$PRS" >> "$GITHUB_OUTPUT"
+          echo "followers=$FOLLOWERS" >> "$GITHUB_OUTPUT"
+          echo "repos=$REPOS" >> "$GITHUB_OUTPUT"
+          echo "contributed_to=$CONTRIBTO" >> "$GITHUB_OUTPUT"
+
+      - name: Write badge JSON files
+        env:
+          CONTRIBUTIONS: ${{ steps.metrics.outputs.contributions }}
+          STARS: ${{ steps.metrics.outputs.stars }}
+          PRS: ${{ steps.metrics.outputs.prs }}
+          FOLLOWERS: ${{ steps.metrics.outputs.followers }}
+          REPOS: ${{ steps.metrics.outputs.repos }}
+          CONTRIBUTED_TO: ${{ steps.metrics.outputs.contributed_to }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p badges
+          printf '{"schemaVersion":1,"label":"contributions (1y)","message":"%s","color":"58A6FF"}\n' "$CONTRIBUTIONS" > badges/contributions.json
+          printf '{"schemaVersion":1,"label":"stars","message":"%s","color":"BC4CFF"}\n' "$STARS" > badges/stars.json
+          printf '{"schemaVersion":1,"label":"PRs merged","message":"%s","color":"22c55e"}\n' "$PRS" > badges/prs-merged.json
+          printf '{"schemaVersion":1,"label":"followers","message":"%s","color":"f97316"}\n' "$FOLLOWERS" > badges/followers.json
+          printf '{"schemaVersion":1,"label":"repos","message":"%s","color":"0ea5e9"}\n' "$REPOS" > badges/repos.json
+          printf '{"schemaVersion":1,"label":"contributed to","message":"%s","color":"8b5cf6"}\n' "$CONTRIBUTED_TO" > badges/contributed-to.json
+
+      - name: Update Latest work section
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess
+
+          login = os.environ["GITHUB_REPOSITORY"].split("/")[0]
+          repos = json.loads(subprocess.check_output([
+              "gh", "api", f"users/{login}/repos?sort=pushed&per_page=50"
+          ]))
+          picked = [r for r in repos if not r["fork"] and not r.get("archived") and r["name"] != login][:5]
+          lines = []
+          for r in picked:
+              desc = (r.get("description") or "No description provided").replace("\n", " ").strip()
+              lang = f" · `{r['language']}`" if r.get("language") else ""
+              lines.append(f"- **[{r['name']}]({r['html_url']})** — {desc}{lang}")
+          block = "\n".join(lines) if lines else "_No public repositories yet._"
+
+          readme = "README.md"
+          text = open(readme, encoding="utf-8").read()
+          start = "<!-- START_SECTION:latest_repos -->"
+          end = "<!-- END_SECTION:latest_repos -->"
+          assert start in text and end in text, "markers missing in README.md"
+          pre, rest = text.split(start, 1)
+          _, post = rest.split(end, 1)
+          open(readme, "w", encoding="utf-8").write(f"{pre}{start}\n{block}\n{end}{post}")
+          print(f"Injected {len(picked)} repos into Latest work section")
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add badges/ README.md
+          if git diff --staged --quiet; then
+            echo "No changes - skip commit"
+            exit 0
+          fi
+          git commit -m "chore: refresh profile data [skip ci]"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Pushed (attempt $i)"
+              exit 0
+            fi
+            sleep $((i * 3))
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+          done
+          echo "Push failed after 3 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### Profile data refresh"
+            echo "| Metric | Value |"
+            echo "|---|---|"
+            echo "| Contributions (1y) | ${{ steps.metrics.outputs.contributions }} |"
+            echo "| Stars | ${{ steps.metrics.outputs.stars }} |"
+            echo "| PRs merged | ${{ steps.metrics.outputs.prs }} |"
+            echo "| Followers | ${{ steps.metrics.outputs.followers }} |"
+            echo "| Repos | ${{ steps.metrics.outputs.repos }} |"
+            echo "| Contributed to | ${{ steps.metrics.outputs.contributed_to }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
