@@ -1,5 +1,6 @@
-<h1 align="center">Hi 👋, I'm Luis Leon Torres</h1>
-<h3 align="center">Software developer · Building modern, reliable software</h3>
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:58A6FF,100:BC4CFF&height=200&section=header&text=Luis%20Leon%20Torres&fontSize=42&fontColor=ffffff&fontAlignY=35&desc=Software%20Developer%20%C2%B7%20Building%20modern%2C%20reliable%20software&descSize=16&descAlignY=58&animation=fadeIn" alt="header" width="100%" />
+</div>
 
 <div align="center">
   <a href="https://github.com/lleontor705"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
@@ -24,8 +25,12 @@
 ### 📊 GitHub stats
 
 <div align="center">
-  <img height="165" src="https://github-readme-stats.vercel.app/api?username=lleontor705&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&include_all_commits=true&count_private=true" alt="GitHub stats" />
-  <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=lleontor705&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&langs_count=8" alt="Top languages" />
+  <img height="150" src="profile-summary-card-output/tokyonight/3-stats.svg" alt="GitHub stats" />
+  <img height="150" src="profile-summary-card-output/tokyonight/1-repos-per-language.svg" alt="Repos per language" />
+</div>
+<div align="center">
+  <img height="150" src="profile-summary-card-output/tokyonight/2-most-commit-language.svg" alt="Most committed languages" />
+  <img height="150" src="profile-summary-card-output/tokyonight/4-productive-time.svg" alt="Productive time" />
 </div>
 
 ### 🐍 Contribution graph
@@ -42,4 +47,8 @@
   <a href="https://github.com/lleontor705"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
   <a href="https://www.linkedin.com/in/luis-humberto-leon-torres-333bb5177"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="mailto:luisleon705@gmail.com"><img src="https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" /></a>
+</div>
+
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:BC4CFF,100:58A6FF&height=120&section=footer" alt="footer" width="100%" />
 </div>
