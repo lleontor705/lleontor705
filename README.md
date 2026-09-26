@@ -1,8 +1,10 @@
-<h1 align="center">Hi 👋, I'm lleontor705</h1>
+<h1 align="center">Hi 👋, I'm Luis Leon Torres</h1>
 <h3 align="center">Software developer · Building modern, reliable software</h3>
 
 <div align="center">
   <a href="https://github.com/lleontor705"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://www.linkedin.com/in/luis-humberto-leon-torres-333bb5177"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  <a href="mailto:luisleon705@gmail.com"><img src="https://img.shields.io/badge/Gmail-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Gmail" /></a>
   <img src="https://komarev.com/ghpvc/?username=lleontor705&amp;label=Profile+views&amp;color=58a6ff&amp;style=flat-square" alt="Profile views" />
 </div>
 
@@ -11,6 +13,7 @@
 - 🔭 Focused on building clean, maintainable, production-ready software
 - 🌱 Always learning new technologies and best practices
 - 💬 Open to collaborating on interesting open-source projects
+- 📫 Reach me at luisleon705@gmail.com or connect on LinkedIn
 
 ### ⚙️ Tech stack
 
@@ -37,4 +40,6 @@
 
 <div align="center">
   <a href="https://github.com/lleontor705"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://www.linkedin.com/in/luis-humberto-leon-torres-333bb5177"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  <a href="mailto:luisleon705@gmail.com"><img src="https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" /></a>
 </div>
