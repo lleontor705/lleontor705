@@ -15,31 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Diagnose token capabilities
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -uo pipefail
-          L="${{ github.repository_owner }}"
-          echo "=== rest user ==="
-          gh api "users/$L" --jq '.login + " followers=" + (.followers|tostring) + " public_repos=" + (.public_repos|tostring)' 2>&1 || echo "RESULT rest-user FAIL"
-          echo "=== rest repos owner ==="
-          gh api "users/$L/repos?per_page=100&type=owner" --jq 'length' 2>&1 || echo "RESULT rest-repos FAIL"
-          echo "=== rest search prs ==="
-          gh api "search/issues?q=is:pr+is:merged+author:$L&per_page=1" --jq '.total_count' 2>&1 || echo "RESULT rest-search FAIL"
-          echo "=== gql viewer ==="
-          gh api graphql -f query='{viewer{login}}' 2>&1 || echo "RESULT gql-viewer FAIL"
-          echo "=== gql user counts ==="
-          gh api graphql -f login="$L" -f query='query($login:String!){user(login:$login){followers{totalCount} repositories(ownerAffiliations:OWNER,isFork:false,first:1){totalCount} repositoriesContributedTo{totalCount}}}' 2>&1 || echo "RESULT gql-user-counts FAIL"
-          echo "=== gql stars ==="
-          gh api graphql -f login="$L" -f query='query($login:String!){user(login:$login){repositories(ownerAffiliations:OWNER,isFork:false,first:100,orderBy:{field:STARGAZERS,direction:DESC}){nodes{stargazers{totalCount}}}}}' --jq '[.data.user.repositories.nodes[].stargazers.totalCount]|add' 2>&1 || echo "RESULT gql-stars FAIL"
-          echo "=== gql contributions ==="
-          gh api graphql -f login="$L" -f query='query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{totalContributions}}}}' 2>&1 || echo "RESULT gql-contrib FAIL"
-          echo "=== contributions html ==="
-          curl -sSL -o /dev/null -w "%{http_code}\n" "https://github.com/users/$L/contributions" 2>&1 || echo "RESULT html FAIL"
-
-      - name: Compute metrics (GraphQL)
+      - name: Compute metrics
         id: metrics
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,24 +24,22 @@ jobs:
           set -euo pipefail
           LOGIN="${{ github.repository_owner }}"
 
-          COUNTS=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
-            followers{totalCount}
-            repositories(ownerAffiliations:OWNER,isFork:false,first:1){totalCount}
-            repositoriesContributedTo{totalCount}
-          }}')
-          FOLLOWERS=$(printf '%s' "$COUNTS" | jq -r '.data.user.followers.totalCount // 0')
-          REPOS=$(printf '%s' "$COUNTS" | jq -r '.data.user.repositories.totalCount // 0')
-          CONTRIBTO=$(printf '%s' "$COUNTS" | jq -r '.data.user.repositoriesContributedTo.totalCount // 0')
+          PROFILE=$(gh api "users/$LOGIN")
+          FOLLOWERS=$(printf '%s' "$PROFILE" | jq -r '.followers // 0')
+
+          REPOSJSON=$(gh api "users/$LOGIN/repos?per_page=100&type=owner")
+          REPOS=$(printf '%s' "$REPOSJSON" | jq -r '[.[] | select(.fork == false)] | length')
+          STARS=$(printf '%s' "$REPOSJSON" | jq -r '[.[] | select(.fork == false) | .stargazers_count] | add // 0')
 
           CONTRIB=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
             contributionsCollection{contributionCalendar{totalContributions}}
           }}')
           CONTRIBUTIONS=$(printf '%s' "$CONTRIB" | jq -r '.data.user.contributionsCollection.contributionCalendar.totalContributions // 0')
 
-          STARSRESP=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
-            repositories(ownerAffiliations:OWNER,isFork:false,first:100,orderBy:{field:STARGAZERS,direction:DESC}){nodes{stargazers{totalCount}}}
+          CONTRIBTO=$(gh api graphql -f login="$LOGIN" -f query='query($login:String!){user(login:$login){
+            repositoriesContributedTo{totalCount}
           }}')
-          STARS=$(printf '%s' "$STARSRESP" | jq -r '[.data.user.repositories.nodes[].stargazers.totalCount] | add // 0')
+          CONTRIBUTED_TO=$(printf '%s' "$CONTRIBTO" | jq -r '.data.user.repositoriesContributedTo.totalCount // 0')
 
           PRS=$(gh api "search/issues?q=is:pr+is:merged+author:$LOGIN&per_page=1" --jq '.total_count // 0')
 
@@ -74,7 +48,7 @@ jobs:
           echo "prs=$PRS" >> "$GITHUB_OUTPUT"
           echo "followers=$FOLLOWERS" >> "$GITHUB_OUTPUT"
           echo "repos=$REPOS" >> "$GITHUB_OUTPUT"
-          echo "contributed_to=$CONTRIBTO" >> "$GITHUB_OUTPUT"
+          echo "contributed_to=$CONTRIBUTED_TO" >> "$GITHUB_OUTPUT"
 
       - name: Write badge JSON files
         env:
