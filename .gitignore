@@ -1,0 +1,14 @@
+# Cortex-IA state
+.cortex-ia/
+
+# OS
+.DS_Store
+
+# Environment
+.env
+
+# Node
+node_modules/
+
+# Logs
+*.log
