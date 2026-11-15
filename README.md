@@ -29,8 +29,8 @@
 
 <!-- START_SECTION:latest_repos -->
 - **[opencode-cli-enforcer](https://github.com/lleontor705/opencode-cli-enforcer)** — Resilient multi-LLM CLI orchestration plugin for OpenCode · `TypeScript`
-- **[cortex-ia](https://github.com/lleontor705/cortex-ia)** — AI Agent Ecosystem Configurator — persistent memory, SDD workflow, inter-agent messaging, multi-CLI orchestration · `Go`
 - **[cortex](https://github.com/lleontor705/cortex)** — Persistent memory for AI coding agents — knowledge graph, importance scoring, vector search · `Go`
+- **[cortex-ia](https://github.com/lleontor705/cortex-ia)** — AI Agent Ecosystem Configurator — persistent memory, SDD workflow, inter-agent messaging, multi-CLI orchestration · `Go`
 - **[homebrew-tap](https://github.com/lleontor705/homebrew-tap)** — Homebrew formulae for Cortex · `Ruby`
 - **[pi-cortex-ia](https://github.com/lleontor705/pi-cortex-ia)** — Deterministic Multi-Agent Control Plane & Ergonomic Engineering Harness for Pi, powered by Cortex-IA · `TypeScript`
 <!-- END_SECTION:latest_repos -->
